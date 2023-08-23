@@ -12,17 +12,32 @@
 <body>
   <main>
     <h1>Treni in partenza oggi: </h1>
-    @foreach ($trains as $train)
-      @if ($train['departure_date'] == date('Y-m-d'))
-        <ul>
-          <li>{{ $train->company }}</li>
-          <li>{{ $train->departure_station }}</li>
-          <li>{{ $train->arrival_station }}</li>
-          <li>{{ $train->departure_time }}</li>
-          <li>{{ $train->arrival_time }}</li>
-        </ul>
-      @endif
-    @endforeach
+    <div class="container">
+      <div class="row">
+        @foreach ($trains as $train)
+          @if ($train['departure_date'] == date('Y-m-d'))
+            <div class="column">
+              <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">{{ $train->departure_station }} - {{ $train->arrival_station }}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">{{ $train->company }}</h6>
+                  <p class="card-text">
+                    Partenza: {{ substr($train->departure_time, 0, 5) }} <br>
+                    Arrivo: {{ substr($train->arrival_time, 0, 5) }}
+                  </p>
+
+                  @if (!$train['in_time'])
+                    <p class="card-text text-danger">Ritardo</p>
+                  @elseif ($train['canceled'])
+                    <p class="card-text text-danger">Cancellato</p>
+                  @endif
+                </div>
+              </div>
+            </div>
+          @endif
+        @endforeach
+      </div>
+    </div>
   </main>
 </body>
 
